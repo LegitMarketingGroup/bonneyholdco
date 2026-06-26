@@ -756,8 +756,17 @@ function buildSectionsForRegion(region){
                   <div style="position:relative;height:200px;"><canvas id="pie-daypart-${id}"></canvas></div>
                 </div>
               </div>
+              <div class="chart-box" style="margin-top:12px;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><h4 style="margin:0;flex:1;">Top Zip Codes: Revenue</h4>
+                  <button class="zip-expand-btn" data-target="rev-${id}" onclick="toggleZipExpand(this)" style="font-size:10px;padding:3px 8px;border:1px solid #ccc;background:#fff;border-radius:3px;cursor:pointer;">Show Top 25</button></div>
+                <canvas id="chart-rev-${id}"></canvas>
+              </div>
+              <div class="chart-box" style="margin-top:12px;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><h4 style="margin:0;flex:1;">Top Zip Codes: Jobs</h4>
+                  <button class="zip-expand-btn" data-target="jobs-${id}" onclick="toggleZipExpand(this)" style="font-size:10px;padding:3px 8px;border:1px solid #ccc;background:#fff;border-radius:3px;cursor:pointer;">Show Top 25</button></div>
+                <canvas id="chart-jobs-${id}"></canvas>
+              </div>
               
-              <div id="takeaway-${id}" class="media-takeaway-card"></div>
             ` : ''}
           </div>
           <div class="analysis-panel">
@@ -769,16 +778,7 @@ function buildSectionsForRegion(region){
                 </div>
                 <div id="stn-tabs-${id}" class="stn-tabs"></div>
                 <div id="stn-detail-${id}"></div>
-              <div class="chart-box" style="margin-top:12px;">
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><h4 style="margin:0;flex:1;">Top Zip Codes: Revenue</h4>
-                  <button class="zip-expand-btn" data-target="rev-${id}" onclick="toggleZipExpand(this)" style="font-size:10px;padding:3px 8px;border:1px solid #ccc;background:#fff;border-radius:3px;cursor:pointer;">Show Top 25</button></div>
-                <canvas id="chart-rev-${id}"></canvas>
-              </div>
-              <div class="chart-box" style="margin-top:12px;">
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><h4 style="margin:0;flex:1;">Top Zip Codes: Jobs</h4>
-                  <button class="zip-expand-btn" data-target="jobs-${id}" onclick="toggleZipExpand(this)" style="font-size:10px;padding:3px 8px;border:1px solid #ccc;background:#fff;border-radius:3px;cursor:pointer;">Show Top 25</button></div>
-                <canvas id="chart-jobs-${id}"></canvas>
-              </div>
+              <div id="takeaway-${id}" class="media-takeaway-card"></div>
               </div>
             ` : `
               <div class="chart-box">
