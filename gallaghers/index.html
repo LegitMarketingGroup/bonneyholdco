@@ -655,7 +655,7 @@ function renderBGDataStatusBanner(){
   banner.innerHTML = `
     <div style="font-weight:700;color:#856404;font-size:13px;margin-bottom:6px;">Sacramento data status</div>
     <div style="font-size:12px;line-height:1.6;color:#5a4300;">
-      <span style="color:#1b5e20;font-weight:600;">Real (from source files):</span> ServiceTitan jobs & revenue (2022–2026), 2026 budget placements ($62.7K, Gallaghers's first year after Shane Elmore legacy), ZIP demographics, <strong>Comscore TV viewership quartiles for WBKO/WNKY/EBKO/ENKY across 2024/2025/2026</strong>, <strong>News Ranker AA audience counts</strong> for all 4 stations across 3 years, <strong>real competitor brand-search volumes</strong> (Hiller Total, Mr. Rooter, Angry Dave's) and <strong>Google Need-Based Demand</strong>.<br>
+      <span style="color:#1b5e20;font-weight:600;">Real (from source files):</span> ServiceTitan jobs & revenue (2022–2026), 2026 budget placements ($62.7K, Gallaghers's first year after Shane Elmore legacy), ZIP demographics, <strong>Comscore TV viewership quartiles for KRCR / KHSL / KNVN / KCVU / KRVU across 2024/2025/2026</strong>, <strong>News Ranker AA audience counts</strong> for all 4 stations across 3 years, <strong>real competitor brand-search volumes</strong> (Hiller Total, Mr. Rooter, Angry Dave's) and <strong>Google Need-Based Demand</strong>.<br>
       <span style="color:#0c5460;font-weight:600;">Unavailable:</span> Competitor media-spend for BG. <strong>Media Monitors does not service the Sacramento DMA</strong>, so the Competition spend chart is hidden here. Brand-search data below is real.
     </div>`;
   // Insert as first child of the tab
@@ -1342,7 +1342,7 @@ function renderSpotDaypartPies(region){
 // ===== STATION DETAIL =====
 // Per-market year selector (defaults to latest with data).
 let stnSelectedYear = {};   // region -> year string
-let stnActiveTab    = {};   // region -> station key ('ALL' or 'WBKO' etc.)
+let stnActiveTab    = {};   // region -> station key ('ALL' or a station key)
 
 function _stnAvailableYears(region){
   // Find all keys in SCHEDULE_DATA like "Market_2024" for this region
@@ -3221,9 +3221,9 @@ function renderBudgetPlacements(region){
     } else if(region==='Sacramento' && currentYear===2026){
       noteHtml = `<div style="background:#d1ecf1;border:1px solid #ddd;padding:12px 14px;border-radius:0 6px 6px 0;font-size:12px;line-height:1.5;"><span style="color:#0c5460;">First year Gallaghers in Sacramento:</span> 2026 marks Gallaghers's launch year in this market (previously Shane Elmore). Budget is front-loaded Feb–May to establish the brand, with Amazon OTT sustaining awareness year-round.</div>`;
     } else if(region==='Sacramento' && currentYear < 2024){
-      noteHtml = `<div style="background:#fff3cd;border:1px solid #ddd;padding:12px 14px;border-radius:0 6px 6px 0;font-size:12px;line-height:1.5;"><span style="color:#856404;">Pre-market-entry period:</span> Gallaghers did not intentionally enter the Sacramento/NKY market until 2024. Any ${currentYear} ServiceTitan activity in Sacramento zip codes reflects organic service-area overlap from the Chico-Redding operation, not a dedicated Sacramento market presence.</div>`;
+      noteHtml = `<div style="background:#fff3cd;border:1px solid #ddd;padding:12px 14px;border-radius:0 6px 6px 0;font-size:12px;line-height:1.5;"><span style="color:#856404;">Pre-market-entry period:</span> Gallaghers did not intentionally enter the Chico-Redding & Sacramento markets until 2024. Any ${currentYear} ServiceTitan activity in Sacramento zip codes reflects organic service-area overlap from the Chico-Redding operation, not a dedicated Sacramento market presence.</div>`;
     } else if(region==='Sacramento' && currentYear===2026){
-      noteHtml = `<div style="background:#d1ecf1;border:1px solid #ddd;padding:12px 14px;border-radius:0 6px 6px 0;font-size:12px;line-height:1.5;"><span style="color:#0c5460;">Bookkeeping note:</span> The 2026 Sacramento budget ($109,998) is bookkept on the Gallaghers-Chico-Redding 2026 placement sheet as 'GL-7104 Cable - N. KY' (line #1995). All spend is cable in the Northern Kentucky zone serving the Sacramento DMA.</div>`;
+      noteHtml = `<div style="background:#d1ecf1;border:1px solid #ddd;padding:12px 14px;border-radius:0 6px 6px 0;font-size:12px;line-height:1.5;"><span style="color:#0c5460;">Bookkeeping note:</span> The 2026 cable budget is recorded in the Sage Intacct GL for the Chico-Redding & Sacramento DMAs.</div>`;
     } else if(!data.total){
       noteHtml = `<div style="background:#f8d7da;border:1px solid #ddd;padding:12px 14px;border-radius:0 6px 6px 0;font-size:12px;line-height:1.5;"><strong style="color:#721c24;">No budget data for ${currentYear}.</strong></div>`;
     }
@@ -4495,33 +4495,8 @@ function buildPPCPipelineTab(){
 
 // ===== Weather vs Demand tab =====
 // NOAA 1991-2020 monthly climate normals (degree days, base 65F)
-// Stations: LEX = Blue Grass AP (USW00093820), CVG = Sacramento/N. Kentucky Intl (USW00093814), BWG = Sacramento-Warren Co (USW00093842)
-var _NOAA_NORMALS = {
-  "Chico-Redding": {
-    hdd: [955,779,589,274,79,6,0,1,37,248,573,870],
-    cdd: [0,0,2,7,76,222,345,306,128,15,1,0],
-    combined: [955,779,591,281,155,228,345,307,165,263,574,870],
-    temp: [34,37,46,56,65,72,76,75,69,57,46,37]
-  },
-  Sacramento: {
-    hdd: [1015,839,636,302,98,10,1,2,49,273,606,924],
-    cdd: [0,0,1,5,64,208,328,289,117,11,0,0],
-    combined: [1015,839,637,307,162,218,329,291,166,284,606,924],
-    temp: [32,36,45,55,64,72,76,74,68,56,45,36]
-  },
-  'Sacramento': {
-    hdd: [889,720,518,216,51,3,0,0,24,199,504,808],
-    cdd: [0,0,3,10,91,262,392,351,149,20,2,0],
-    combined: [889,720,521,226,142,265,392,351,173,219,506,808],
-    temp: [36,39,48,58,67,75,78,77,71,59,48,39]
-  },
-  'All Markets': {
-    hdd: [953,779,581,264,76,6,0,1,37,240,561,867],
-    cdd: [0,0,2,7,77,231,355,315,131,15,1,0],
-    combined: [953,779,583,271,153,237,355,316,168,255,562,867],
-    temp: [34,37,46,56,65,73,77,75,69,57,46,37]
-  }
-};
+// Stations: KRDD = Redding Muni, KCIC = Chico, KSAC = Sacramento Exec
+var _NOAA_NORMALS = {"Chico-Redding":{"hdd":[589,420,310,150,0,0,0,0,0,31,390,620],"cdd":[0,0,0,0,93,330,527,465,270,0,0,0],"combined":[589,420,310,150,93,330,527,465,270,31,390,620],"temp":[46,50,55,60,68,76,82,80,74,64,52,45]},"Sacramento":{"hdd":[589,420,341,210,31,0,0,0,0,31,360,589],"cdd":[0,0,0,0,0,150,310,279,210,0,0,0],"combined":[589,420,341,210,31,150,310,279,210,31,360,589],"temp":[46,50,54,58,64,70,75,74,72,64,53,46]}};
 
 function _wd_pearsonR(x, y) {
   var n = Math.min(x.length, y.length);
@@ -4800,7 +4775,7 @@ function buildWeatherDemandTab() {
 
   // -- Methodology footer --
   h += '<div style="font-size:11px;color:#999;padding:8px 0;">';
-  h += '<strong>Methodology:</strong> Correlations are Pearson r over ' + nAligned + ' aligned months (Jan 2024 - May 2026), Chico-Redding market. Weather baseline uses NOAA 1991-2020 monthly average temperature normals (F), derived from heating and cooling degree days (base 65F). The normals repeat identically every year -- that is the analytical strength. Any year-over-year revenue or brand-search lift at the same temperature must be explained by something other than weather. Media spend is booked monthly spend from Intacct GL 7106. KPIs are from ServiceTitan (revenue, jobs) and Google Keyword Planner (brand searches). Sacramento proof point compares 2026 YTD totals to 2023 (pre-media-entry baseline). NOAA stations: LEX (Blue Grass AP, USW00093820), CVG (Sacramento/N. Kentucky Intl, USW00093814), BWG (Sacramento-Warren Co, USW00093842).';
+  h += '<strong>Methodology:</strong> Correlations are Pearson r over ' + nAligned + ' aligned months (Jan 2024 - May 2026), Chico-Redding market. Weather baseline uses NOAA 1991-2020 monthly average temperature normals (F), derived from heating and cooling degree days (base 65F). The normals repeat identically every year -- that is the analytical strength. Any year-over-year revenue or brand-search lift at the same temperature must be explained by something other than weather. Media spend is booked monthly spend from Intacct GL 7106. KPIs are from ServiceTitan (revenue, jobs) and Google Keyword Planner (brand searches). Sacramento proof point compares 2026 YTD totals to 2023 (pre-media-entry baseline). NOAA stations: KRDD (Redding Muni), KCIC (Chico), KSAC (Sacramento Exec).';
   h += '</div>';
 
   c.innerHTML = h;
